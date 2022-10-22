@@ -101,7 +101,7 @@ jobs:
           java-version: ${{ matrix.java }}
       - name: Configure
         working-directory: java
-        run: cmake --parallel 128 -DCMAKE_BUILD_TYPE=Release -S . -B build
+        run: cmake -DCMAKE_BUILD_PARALLEL_LEVEL=128 -DCMAKE_BUILD_TYPE=Release -S . -B build
       - name: Build
         working-directory: java/build
         run: make -j 128
