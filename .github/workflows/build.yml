@@ -67,45 +67,45 @@ jobs:
           path: build/release/tigervnc*.exe
 
   build-macos:
-    runs-on: macos-latest
+    runs-on: macos-11
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@main
       - name: Install dependencies
         run: |
           brew install fltk pixman ffmpeg
           brew install gnutls nettle gmp
       - name: Configure
-        run: cmake -DCMAKE_BUILD_TYPE=Debug -S . -B build
+        run: cmake -j128 -DCMAKE_BUILD_TYPE=Release -S . -B build
       - name: Build
         working-directory: build
-        run: make
+        run: make -j128
       - name: Install
         working-directory: build
         run: make dmg
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@main
         with:
           name: macOS
           path: build/TigerVNC-*.dmg
 
   build-java:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
-        java: [ '8', '11', '16' ]
+        java: [ '11', '16', '19' ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@main
       - name: Setup java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@main
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.java }}
       - name: Configure
         working-directory: java
-        run: cmake -DCMAKE_BUILD_TYPE=Debug -S . -B build
+        run: cmake -j128 -DCMAKE_BUILD_TYPE=Release -S . -B build
       - name: Build
         working-directory: java/build
-        run: make
-      - uses: actions/upload-artifact@v3
+        run: make -j128
+      - uses: actions/upload-artifact@main
         with:
           name: Java (${{ matrix.java }})
           path: java/build/VncViewer.jar
@@ -114,23 +114,19 @@ jobs:
     strategy:
       matrix:
         target:
-          - centos7
-          - centos8
-          - centos9
-          - bionic
-          - focal
+          - centos-latest
           - jammy
       fail-fast: false
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       DOCKER: ${{ matrix.target }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@main
       - name: Build image
         run: docker build -t tigervnc/$DOCKER .github/containers/$DOCKER
       - name: Build packages
         run: .github/containers/$DOCKER/build.sh
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@main
         with:
           name: Packages (${{ matrix.target }})
           path: .github/containers/${{ matrix.target }}/result
