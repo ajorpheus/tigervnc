@@ -1,4 +1,4 @@
-FROM quay.io/centos/centos:latest
+FROM centos:latest
 
 RUN dnf -yqqq group install 'Development Tools'
 RUN dnf -yqqq install sudo
