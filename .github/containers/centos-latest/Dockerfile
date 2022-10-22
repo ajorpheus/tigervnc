@@ -1,8 +1,5 @@
-FROM centos:latest
+FROM quay.io/centos/centos:stream9-development
 
-RUN sed -i 's/#mirrorlist/mirrorlist/g' /etc/yum.repos.d/CentOS-*
-RUN cat /etc/yum.repos.d/CentOS-*
-# RUN sed -i 's|baseurl=http://mirror.stream.centos.org|g' /etc/yum.repos.d/CentOS-*
 RUN dnf -yqqq groupinstall 'Development Tools'
 RUN cat /var/log/dnf.log
 RUN dnf -yqqq install sudo
