@@ -42,13 +42,13 @@ jobs:
       - uses: msys2/setup-msys2@v2
       - name: Install dependencies
         run: |
-          pacman --sync --noconfirm --needed -y \
+          yes | pacman -S --noconfirm --needed \
             make mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake # mingw-w64-aarch64-toolchain mingw-w64-aarch64-cmake
-          pacman --sync --noconfirm --needed -y \
+          yes | pacman --sync --noconfirm --needed \
             mingw-w64-x86_64-fltk mingw-w64-x86_64-libjpeg-turbo \
             mingw-w64-x86_64-gnutls mingw-w64-x86_64-pixman \
             mingw-w64-x86_64-nettle mingw-w64-x86_64-gmp
-          # pacman --sync --noconfirm --needed -y \
+          # yes | pacman --sync --noconfirm --needed -y \
             mingw-w64-aarch64-fltk mingw-w64-aarch64-libjpeg-turbo \
             mingw-w64-aarch64-gnutls mingw-w64-aarch64-pixman \
             mingw-w64-aarch64-nettle mingw-w64-aarch64-gmp
