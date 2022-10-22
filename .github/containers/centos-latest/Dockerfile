@@ -1,6 +1,6 @@
 FROM centos:latest
 
-RUN dnf -yqqq group install 'Development Tools'
+RUN dnf -yqqq groupinstall 'Development Tools'
 RUN dnf -yqqq install sudo
 RUN dnf config-manager --set-enabled crb
 
