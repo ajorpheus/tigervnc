@@ -48,9 +48,9 @@ jobs:
             mingw-w64-x86_64-fltk mingw-w64-x86_64-libjpeg-turbo \
             mingw-w64-x86_64-gnutls mingw-w64-x86_64-pixman \
             mingw-w64-x86_64-nettle mingw-w64-x86_64-gmp \
-            mingw-w64-x86_64-fltk mingw-w64-arm64-libjpeg-turbo \
-            mingw-w64-x86_64-gnutls mingw-w64-arm64-pixman \
-            mingw-w64-x86_64-nettle mingw-w64-arm64-gmp
+            mingw-w64-arm64-fltk mingw-w64-arm64-libjpeg-turbo \
+            mingw-w64-arm64-gnutls mingw-w64-arm64-pixman \
+            mingw-w64-arm64-nettle mingw-w64-arm64-gmp
       - name: Configure
         run: cmake -j128 -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -S . -B build
       - name: Build
