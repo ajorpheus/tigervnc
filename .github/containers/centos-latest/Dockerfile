@@ -1,7 +1,7 @@
 FROM quay.io/centos/centos:latest
 
-RUN dnf -y group install 'Development Tools'
-RUN dnf -y install sudo
+RUN dnf -yqqq group install 'Development Tools'
+RUN dnf -yqqq install sudo
 RUN dnf config-manager --set-enabled crb
 
 RUN useradd -s /bin/bash -m rpm
