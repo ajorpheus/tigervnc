@@ -10,12 +10,15 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libfltk1.3-dev fluid gettext appstream
-          sudo apt-get install -y libgnutls28-dev nettle-dev libgmp-dev
-          sudo apt-get install -y libxtst-dev libxdamage-dev libxfixes-dev libxrandr-dev libpam-dev
-          sudo apt-get install -y libavcodec-dev libavutil-dev libswscale-dev
+          sudo apt-get full-upgrade -yqqqfm --autoremove --purge
+          sudo apt-get install -yqqqfm --autoremove --purge libfltk1.3-dev fluid gettext appstream
+          sudo apt-get install -yqqqfm --autoremove --purge libgnutls28-dev nettle-dev libgmp-dev
+          sudo apt-get install -yqqqfm --autoremove --purge libxtst-dev libxdamage-dev libxfixes-dev libxrandr-dev libpam-dev
+          sudo apt-get install -yqqqfm --autoremove --purge libavcodec-dev libavutil-dev libswscale-dev
+          sudo apt-get clean
+
       - name: Configure
-        run: cmake -DCMAKE_BUILD_TYPE=Debug -S . -B build
+        run: cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -S . -B build
       - name: Build
         working-directory: build
         run: make
