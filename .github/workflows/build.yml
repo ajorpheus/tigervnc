@@ -19,10 +19,10 @@ jobs:
           sudo apt-get clean
 
       - name: Configure
-        run: cmake -j128 -DCMAKE_BUILD_TYPE=RelWithDebInfo -S . -B build
+        run: cmake -j 128 -DCMAKE_BUILD_TYPE=RelWithDebInfo -S . -B build
       - name: Build
         working-directory: build
-        run: make -j128
+        run: make -j 128
       - name: Install
         working-directory: build
         run: make tarball
@@ -52,15 +52,15 @@ jobs:
             mingw-w64-arm64-gnutls mingw-w64-arm64-pixman \
             mingw-w64-arm64-nettle mingw-w64-arm64-gmp
       - name: Configure
-        run: cmake -j128 -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -S . -B build
+        run: cmake -j 128 -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -S . -B build
       - name: Build
         working-directory: build
-        run: make -j128
+        run: make -j 128
       - name: Install
         working-directory: build
         env:
           MSYS2_PATH_TYPE: inherit
-        run: make -j128 installer winvnc_installer
+        run: make -j 128 installer winvnc_installer
       - uses: actions/upload-artifact@main
         with:
           name: Windows
@@ -75,10 +75,10 @@ jobs:
           brew install fltk pixman ffmpeg
           brew install gnutls nettle gmp
       - name: Configure
-        run: cmake -j128 -DCMAKE_BUILD_TYPE=Release -S . -B build
+        run: cmake -j 128 -DCMAKE_BUILD_TYPE=Release -S . -B build
       - name: Build
         working-directory: build
-        run: make -j128
+        run: make -j 128
       - name: Install
         working-directory: build
         run: make dmg
@@ -101,10 +101,10 @@ jobs:
           java-version: ${{ matrix.java }}
       - name: Configure
         working-directory: java
-        run: cmake -j128 -DCMAKE_BUILD_TYPE=Release -S . -B build
+        run: cmake -j 128 -DCMAKE_BUILD_TYPE=Release -S . -B build
       - name: Build
         working-directory: java/build
-        run: make -j128
+        run: make -j 128
       - uses: actions/upload-artifact@main
         with:
           name: Java (${{ matrix.java }})
