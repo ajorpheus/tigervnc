@@ -43,7 +43,7 @@ jobs:
       - name: Install dependencies
         run: |
           pacman --sync --noconfirm --needed \
-            make mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake mingw-w64-arm64-toolchain mingw-w64-arm64-cmake
+            make mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake mingw-w64-aarch64-toolchain mingw-w64-aarch64-cmake
           pacman --sync --noconfirm --needed \
             mingw-w64-x86_64-fltk mingw-w64-x86_64-libjpeg-turbo \
             mingw-w64-x86_64-gnutls mingw-w64-x86_64-pixman \
