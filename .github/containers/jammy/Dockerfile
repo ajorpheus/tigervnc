@@ -3,7 +3,8 @@ FROM ubuntu:jammy
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update
-RUN apt-get -y install packaging-dev equivs
+RUN apt-get -yqqqfm --autoremove --purge install packaging-dev equivs
+RUN apt-get clean
 
 RUN useradd -s /bin/bash -m deb
 RUN echo >> /etc/sudoers
