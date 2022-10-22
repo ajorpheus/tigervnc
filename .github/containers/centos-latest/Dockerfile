@@ -1,4 +1,4 @@
-FROM quay.io/centos/centos:stream9
+FROM quay.io/centos/centos:latest
 
 RUN dnf -y group install 'Development Tools'
 RUN dnf -y install sudo
