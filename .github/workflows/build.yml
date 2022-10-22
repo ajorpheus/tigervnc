@@ -91,7 +91,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        java: [ '11', '16', '19' ]
+        java: [ '16', '19' ]
     steps:
       - uses: actions/checkout@main
       - name: Setup java
