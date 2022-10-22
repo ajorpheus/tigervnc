@@ -115,7 +115,7 @@ jobs:
       matrix:
         target:
           - centos-latest
-          - ubuntu:latest
+          - ubuntu-latest
       fail-fast: false
     runs-on: ubuntu-22.04
     env:
