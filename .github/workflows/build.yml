@@ -117,19 +117,11 @@ jobs:
         with:
           name: Linux (Ubuntu)
           path: build/tigervnc-*.tar.gz
-        uses: actions/upload-artifact@main
-        with:
           name: Windows
           path: build/release/tigervnc*.exe
-        uses: actions/upload-artifact@main
-        with:
           name: macOS
           path: build/TigerVNC-*.dmg
-        uses: actions/upload-artifact@main
-        with:
           name: Java (${{ matrix.java }})
           path: java/build/VncViewer.jar
-        uses: actions/upload-artifact@main
-        with:
           name: Packages (${{ matrix.target }})
           path: .github/containers/${{ matrix.target }}/result
