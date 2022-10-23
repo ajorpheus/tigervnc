@@ -142,9 +142,9 @@ jobs:
             ${{ env.changelog }}
             </p>
             </details> 
-           files: |
-             build/tigervnc-*.tar.gz
-             build/release/tigervnc*.exe
-             build/TigerVNC-*.dmg
-             java/build/VncViewer.jar
-             .github/containers/${{ matrix.target }}/result
+          files: |
+            build/tigervnc-*.tar.gz
+            build/release/tigervnc*.exe
+            build/TigerVNC-*.dmg
+            java/build/VncViewer.jar
+            .github/containers/${{ matrix.target }}/result
