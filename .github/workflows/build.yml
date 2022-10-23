@@ -129,11 +129,8 @@ jobs:
           name: Packages (${{ matrix.target }})
           path: .github/containers/${{ matrix.target }}/result
 
-  release-artifacts:
-    runs-on: ubuntu-20.04
-    steps:
       - name: Release Artifaces
-        id: make-release
+        id: make-release-artifacts
         uses: softprops/action-gh-release@master
         with:
           tag_name: ${{ needs.prepare.outputs.tigervnc_version }} 
