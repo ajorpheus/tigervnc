@@ -4,7 +4,7 @@ on: [workflow_dispatch, push, pull_request]
 
 jobs:
   build-linux:
-    runs-on: [ 'ubuntu-22.04', 'self-hosted' ]
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout Code 😂
         uses: actions/checkout@main
@@ -19,18 +19,12 @@ jobs:
           sudo apt-get clean
 
       - name: Configure
-        run: cmake -DCMAKE_BUILD_PARALLEL_LEVEL=4 -DCMAKE_BUILD_TYPE=RelWithDebInfo -S . -B build
-      - name: Build
-        working-directory: build
-        run: make -j 4
+        run: cmake -DCMAKE_BUILD_PARALLEL_LEVEL=128 -DCMAKE_BUILD_TYPE=RelWithDebInfo -S . -B build
       - name: Install
         working-directory: build
-        run: make tarball
-      - name: Upload files
-        uses: actions/upload-artifact@main
-        with:
-          name: Linux (Ubuntu)
-          path: build/tigervnc-*.tar.gz
+        run: |
+          make -j128 tarball
+          make -j128 deb
 
   build-windows:
     runs-on: windows-latest
@@ -58,11 +52,9 @@ jobs:
         working-directory: build
         env:
           MSYS2_PATH_TYPE: inherit
-        run: make -j 128 installer winvnc_installer
+        run: make -j128 installer winvnc_installer
       - uses: actions/upload-artifact@main
-        with:
-          name: Windows
-          path: build/release/tigervnc*.exe
+
 
   build-macos:
     runs-on: macos-11
@@ -76,17 +68,16 @@ jobs:
         run: cmake -DCMAKE_BUILD_PARALLEL_LEVEL=128 -DCMAKE_BUILD_TYPE=Release -S . -B build
       - name: Build
         working-directory: build
-        run: make -j 128
+        run: make -j128
       - name: Install
         working-directory: build
         run: make dmg
-      - uses: actions/upload-artifact@main
         with:
           name: macOS
           path: build/TigerVNC-*.dmg
 
   build-java:
-    runs-on: [ 'ubuntu-22.04', 'self-hosted' ]
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         java: [ '16', '18', '19' ]
@@ -99,21 +90,19 @@ jobs:
           java-version: ${{ matrix.java }}
       - name: Configure
         working-directory: java
-        run: cmake -DCMAKE_BUILD_PARALLEL_LEVEL=4 -DCMAKE_BUILD_TYPE=Release -S . -B build
+        run: cmake -DCMAKE_BUILD_PARALLEL_LEVEL=128 -DCMAKE_BUILD_TYPE=Release -S . -B build
       - name: Build
         working-directory: java/build
-        run: make -j 128
-      - uses: actions/upload-artifact@main
-        with:
-          name: Java (${{ matrix.java }})
-          path: java/build/VncViewer.jar
+        run: make -j128
 
   build-packages:
     strategy:
       matrix:
         target:
           - centos-latest
+          - centos-aarch64-latest
           - ubuntu-latest
+          - ubuntu-aarch64-latest
       fail-fast: false
     runs-on: ubuntu-22.04
     env:
@@ -123,8 +112,24 @@ jobs:
       - name: Build image
         run: docker build -t tigervnc/$DOCKER .github/containers/$DOCKER
       - name: Build packages
-        run: .github/containers/$DOCKER/build.sh
-      - uses: actions/upload-artifact@main
+        run: |
+          .github/containers/$DOCKER/build.sh
+          .github/containers/$DOCKER/build.1.sh
+      - name: Upload package artifacts
+        uses: actions/upload-artifact@main
+        with:
+          name: Linux (Ubuntu)
+          path: build/tigervnc-*.tar.gz
+        with:
+          name: Windows
+          path: build/release/tigervnc*.exe
+        with:
+          name: macOS
+          path: build/TigerVNC-*.dmg
+        with:
+          name: Java (${{ matrix.java }})
+          path: java/build/VncViewer.jar
         with:
           name: Packages (${{ matrix.target }})
           path: .github/containers/${{ matrix.target }}/result
+
