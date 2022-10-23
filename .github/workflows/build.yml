@@ -4,10 +4,7 @@ on: [workflow_dispatch, push, pull_request]
 
 jobs:
   build-linux:
-    strategy:
-      matrix:
-        os: [ 'ubuntu-22.04', 'self-hosted' ]
-    runs-on: ${{ matrix.os }}
+    runs-on: [ 'ubuntu-22.04', 'self-hosted' ]
     steps:
       - name: Checkout Code 😂
         uses: actions/checkout@main
@@ -89,9 +86,7 @@ jobs:
           path: build/TigerVNC-*.dmg
 
   build-java:
-      matrix:
-        os: [ 'ubuntu-22.04', 'self-hosted' ]
-    runs-on: ${{ matrix.os }}
+    runs-on: [ 'ubuntu-22.04', 'self-hosted' ]
     strategy:
       matrix:
         java: [ '16', '18', '19' ]
