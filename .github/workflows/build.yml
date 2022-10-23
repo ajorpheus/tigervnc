@@ -114,14 +114,18 @@ jobs:
           .github/containers/$DOCKER/build.1.sh
       - name: Upload package artifacts
         uses: actions/upload-artifact@main
+        matrix:
+          name:
+            - Linux (Ubuntu)
+            - Windows
+            - macOS
+            - Java (${{ matrix.java }})
+            - Packages (${{ matrix.target }})
         with:
-          name: Linux (Ubuntu)
-          path: build/tigervnc-*.tar.gz
-          name: Windows
-          path: build/release/tigervnc*.exe
-          name: macOS
-          path: build/TigerVNC-*.dmg
-          name: Java (${{ matrix.java }})
-          path: java/build/VncViewer.jar
-          name: Packages (${{ matrix.target }})
-          path: .github/containers/${{ matrix.target }}/result
+          name: ${{ matrix.name }}
+          path: |
+            build/tigervnc-*.tar.gz
+            build/release/tigervnc*.exe
+            build/TigerVNC-*.dmg
+            java/build/VncViewer.jar
+            .github/containers/${{ matrix.target }}/result
