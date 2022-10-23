@@ -115,13 +115,13 @@ jobs:
       - name: Upload package artifacts
         uses: actions/upload-artifact@main
         with:
-          - name: Linux (Ubuntu)
-            path: build/tigervnc-*.tar.gz
-          - name: Windows
-            path: build/release/tigervnc*.exe
-          - name: macOS
-            path: build/TigerVNC-*.dmg
-          - name: Java (${{ matrix.java }})
-            path: java/build/VncViewer.jar
-          - name: Packages (${{ matrix.target }})
-            path: .github/containers/${{ matrix.target }}/result
+          name: Linux (Ubuntu)
+          path: build/tigervnc-*.tar.gz
+          name: Windows
+          path: build/release/tigervnc*.exe
+          name: macOS
+          path: build/TigerVNC-*.dmg
+          name: Java (${{ matrix.java }})
+          path: java/build/VncViewer.jar
+          name: Packages (${{ matrix.target }})
+          path: .github/containers/${{ matrix.target }}/result
