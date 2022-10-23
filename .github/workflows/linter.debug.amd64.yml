@@ -1,0 +1,27 @@
+---
+name: 🐜 Debug with Super Linter using Legacy CPU Runner
+on: workflow_dispatch
+jobs:
+  super-linter-debug:
+    name: Run Super-Linter Debugging Tool
+    runs-on: ubuntu-22.04 # We use GitHub Hosted runners if the GitHub Actions file designed for Legacy CPU, else we use self-hosted arm64 PC due to GitHub's parent company,  Microsoft,  has not enabled either arm64 or aarch64 offical Azure VMs to them yet.
+    steps:
+    ##########################
+    # Checkout the code base #
+    ##########################
+      - name: Checkout Code 😂
+        id: run-checkout
+        uses: actions/checkout@main
+        with:
+      #####################################
+      # Full git history is needed to get #
+      #   a proper list of changed files  #
+      #      within `super-linter`        #
+      #####################################
+          fetch-depth: 0
+      - name: Super-Linter Debugger Tool
+        id: run-debug
+        uses: github/super-linter@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_ALL_CODEBASE: true
