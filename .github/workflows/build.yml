@@ -97,20 +97,31 @@ jobs:
       matrix:
         target:
           - centos-latest
-          - centos-aarch64-latest
           - ubuntu-latest
-          - ubuntu-aarch64-latest
       fail-fast: false
     runs-on: ubuntu-22.04
     env:
       DOCKER: ${{ matrix.target }}
     steps:
       - uses: actions/checkout@main
-      - name: Build image
-        run: docker build -t tigervnc/$DOCKER .github/containers/$DOCKER
-      - name: Build packages
+      - name: Build image and packages
         run: |
+          docker build -t tigervnc/$DOCKER .github/containers/$DOCKER
           .github/containers/$DOCKER/build.sh
+
+  build-aarch64:
+    strategy:
+      matrix:
+        target:
+          - centos-aarch64-latest
+          - ubuntu-aarch64-latest
+      fail-fast: false
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@main
+      - name: Build image and ARM64 packages
+        run: |
+          docker build -t tigervnc/$DOCKER .github/containers/$DOCKER
           .github/containers/$DOCKER/build.1.sh
       - name: Upload package artifacts
         uses: actions/upload-artifact@main
