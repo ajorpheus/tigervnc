@@ -1,6 +1,6 @@
 name: Cancel
 
-on: [workflow_dispatch, push]
+on: workflow_dispatch
 
 jobs:
   cancel:
