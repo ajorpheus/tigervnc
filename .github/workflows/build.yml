@@ -145,6 +145,7 @@ jobs:
 
             </p>
             </details>
+
           files: |
             build/tigervnc-*.tar.gz
             build/release/tigervnc*.exe
