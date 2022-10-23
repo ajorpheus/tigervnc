@@ -89,7 +89,6 @@ jobs:
           path: build/TigerVNC-*.dmg
 
   build-java:
-    strategy:
       matrix:
         os: [ 'ubuntu-22.04', 'self-hosted' ]
     runs-on: ${{ matrix.os }}
