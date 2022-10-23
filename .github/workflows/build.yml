@@ -136,10 +136,13 @@ jobs:
           name: TigerVNC ${{ needs.prepare.outputs.tiger_version }}
           body: |
             #### [A description of the various files]((https://github.com/\${{ GITHUB.ACTOR }}\/tigervnc#release-files)) are in the README
+           
             ---
             <details open><summary><h3>Changelog</summary>
             <p>
+           
             ${{ env.changelog }}
+
             </p>
             </details> 
           files: |
