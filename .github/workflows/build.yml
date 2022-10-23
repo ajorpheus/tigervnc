@@ -117,6 +117,8 @@ jobs:
           - ubuntu-aarch64-latest
       fail-fast: false
     runs-on: self-hosted
+    env:
+      DOCKER: ${{ matrix.target }}
     steps:
       - uses: actions/checkout@main
       - name: Build image and ARM64 packages
