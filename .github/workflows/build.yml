@@ -135,7 +135,7 @@ jobs:
         tag_name: ${{ needs.prepare.outputs.tigervnc_version }}
         name: TigerVNC ${{ needs.prepare.outputs.tiger_version }}
         body: |
-          #### [A description of the various files]((https://github.com/${{ GITHUB.ACTOR }}/yt-dlp#release-files)) are in the README
+          #### [A description of the various files]((https://github.com/\${{ GITHUB.ACTOR }}\/tigervnc#release-files)) are in the README
           ---
           <details open><summary><h3>Changelog</summary>
           <p>
