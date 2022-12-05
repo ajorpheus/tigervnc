@@ -3,59 +3,6 @@ name: Build
 on: [workflow_dispatch, push, pull_request]
 
 jobs:
-  build-linux:
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Checkout Code 😂
-        uses: actions/checkout@main
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get full-upgrade -yqqqfm --autoremove --purge
-          sudo apt-get install -yqqqfm --autoremove --purge libfltk1.3-dev fluid gettext appstream
-          sudo apt-get install -yqqqfm --autoremove --purge libgnutls28-dev nettle-dev libgmp-dev
-          sudo apt-get install -yqqqfm --autoremove --purge libxtst-dev libxdamage-dev libxfixes-dev libxrandr-dev libpam-dev
-          sudo apt-get install -yqqqfm --autoremove --purge libavcodec-dev libavutil-dev libswscale-dev
-          sudo apt-get clean
-
-      - name: Configure
-        run: cmake -DCMAKE_BUILD_PARALLEL_LEVEL=128 -DCMAKE_BUILD_TYPE=RelWithDebInfo -S . -B build
-      - name: Install
-        working-directory: build
-        run: |
-          make -j128 tarball
-          make -j128 deb
-
-  build-windows:
-    runs-on: windows-latest
-    defaults:
-      run:
-        shell: msys2 {0}
-    steps:
-      - name: Checkout Code 😂
-        uses: actions/checkout@main
-      - uses: msys2/setup-msys2@v2
-      - name: Install dependencies
-        run: |
-          pacman -Syyqqq --noconfirm \
-            make mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake # mingw-w64-aarch64-toolchain mingw-w64-aarch64-cmake
-          pacman -Syyqqq --noconfirm \
-            mingw-w64-x86_64-fltk mingw-w64-x86_64-libjpeg-turbo \
-            mingw-w64-x86_64-gnutls mingw-w64-x86_64-pixman \
-            mingw-w64-x86_64-nettle mingw-w64-x86_64-gmp
-      - name: Configure
-        run: cmake -DCMAKE_BUILD_PARALLEL_LEVEL=128 -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -S . -B build
-      - name: Build
-        working-directory: build
-        run: make -j 128
-      - name: Install
-        working-directory: build
-        env:
-          MSYS2_PATH_TYPE: inherit
-        run: make -j128 installer winvnc_installer
-      - uses: actions/upload-artifact@main
-
-
   build-macos:
     runs-on: macos-11
     steps:
@@ -72,71 +19,11 @@ jobs:
       - name: Install
         working-directory: build
         run: make dmg
-
-  build-java:
-    runs-on: ubuntu-22.04
-    strategy:
-      matrix:
-        java: [ '16', '18', '19' ]
-    steps:
-      - uses: actions/checkout@main
-      - name: Setup java
-        uses: actions/setup-java@main
-        with:
-          distribution: 'temurin'
-          java-version: ${{ matrix.java }}
-      - name: Configure
-        working-directory: java
-        run: cmake -DCMAKE_BUILD_PARALLEL_LEVEL=128 -DCMAKE_BUILD_TYPE=Release -S . -B build
-      - name: Build
-        working-directory: java/build
-        run: make -j128
-
-  build-packages:
-    strategy:
-      matrix:
-        target:
-          - centos-latest
-          - ubuntu-latest
-      fail-fast: false
-    runs-on: ubuntu-22.04
-    env:
-      DOCKER: ${{ matrix.target }}
-    steps:
-      - uses: actions/checkout@main
-      - name: Build image and packages
-        run: |
-          docker build -t tigervnc/$DOCKER .github/containers/$DOCKER
-          .github/containers/$DOCKER/build.sh
-
-  build-aarch64:
-    strategy:
-      matrix:
-        target:
-          - centos-aarch64-latest
-          - ubuntu-aarch64-latest
-      fail-fast: false
-    runs-on: self-hosted
-    env:
-      DOCKER: ${{ matrix.target }}
-    steps:
-      - uses: actions/checkout@main
-      - name: Build image and ARM64 packages
-        run: |
-          docker build -t tigervnc/$DOCKER .github/containers/$DOCKER
-          .github/containers/$DOCKER/build.1.sh
       - name: Upload package artifacts
         uses: actions/upload-artifact@main
         with:
           name: |
-            - Linux (Ubuntu)
-            - Windows
             - macOS
-            - Java (${{ matrix.java }})
-            - Packages (${{ matrix.target }})
           path: |
-            build/tigervnc-*.tar.gz
-            build/release/tigervnc*.exe
             build/TigerVNC-*.dmg
-            java/build/VncViewer.jar
-            .github/containers/${{ matrix.target }}/result
+            
